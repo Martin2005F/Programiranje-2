@@ -1,0 +1,94 @@
+ZADATAK 1.
+
+//Datoteka Dat.txt iz koje cete citati vec je stvorena, ali njen sadrzaj
+//nemojte mijenjati, inace nece proci testcaseovi
+#include <stdio.h>
+
+
+int main(void){
+    char ime[25];
+    char prezime[25];
+    int broj;
+    
+    FILE *d = NULL;
+    FILE *s = NULL;
+     d = fopen("Dat.txt", "r");
+    
+    if(d == NULL){
+        printf("datoteku nije moguce stvoriti");
+        return 1;
+    }
+    
+   fscanf(d, "%d", &broj);
+   fclose(d);
+   
+   s = fopen("Studenti.txt", "w");
+   
+   if(s==NULL){
+       printf("Datoteku nije moguce stvoriti");
+       return 1;
+   }
+   
+
+    for(int i=0; i<broj; i++){
+        scanf("%s %s", ime, prezime);
+        fprintf(s, "%s %s\n", ime, prezime);
+    }
+    
+    for(int i=0; i<broj; i++){
+        fscanf(s ,"%s %s", ime[i], prezime[i]);
+        printf("%s %s\n", ime[i], prezime[i]);
+    } 
+    fclose(s);
+    
+    return 0;
+}
+
+ZADATAK 2.
+
+
+#include "myheader.h"
+#include <stdio.h>
+
+
+int main(void){
+    float **A;
+    int m, n;
+    
+    
+    FILE *in = fopen("in.txt", "r");
+    //FILE *out = fopen("out.txt", "w");
+    
+    if(in == NULL){
+        printf("Datoteka se ne moze otvoriti");
+        return 1;
+    }
+    
+    fscanf(in, "%d %d", &m, &n);
+    
+    fclose(in);
+    
+    A = allocateMatrix(m, n);
+    inputMatrix(A,m,n);
+    
+    FILE *out = fopen("out.txt", "w");
+        if(out == NULL){
+        printf("Datoteka se ne moze otvoriti");
+        return 1;
+    }
+    
+    printf("REZULTATI:\n");
+    for(int i=0; i<m-1; i++){
+        for(int j=1; j<n; j++){
+            printf("%.2f\t", A[i][j]);
+            fprintf(out,"%.2f\t", A[i][j]);
+        }
+        printf("\n");
+        
+    }
+    fclose(out);
+
+    A = freeMemory(A, m);
+    
+    return 0;
+}
